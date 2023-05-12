@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import headerBg from '../../assets/3.png'
 import item1 from '../../assets/icons/1.png'
 import item2 from '../../assets/icons/2.png'
@@ -9,9 +9,60 @@ import bg2 from '../../assets/5.png'
 import { FaCoffee } from 'react-icons/fa';
 import { Link, useLoaderData } from 'react-router-dom';
 import CoffeeCard from './CoffeeCard';
+import Swal from 'sweetalert2';
 
 const Home = () => {
-    const coffeeItems = useLoaderData();
+    const loadedData = useLoaderData();
+    const [coffeeItems, setItems] = useState(loadedData);
+
+
+
+    // Edit, delete, view operations
+    const handleDelete = id => {
+        console.log(id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:5000/coffee/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.deletedCount > 0) {
+                            Swal.fire(
+                                'Deleted!',
+                                `Coffee item has been deleted. id: ${id}`,
+                                'success'
+                            )
+                            const remaining = coffeeItems.filter(item => item._id !== id);
+                            setItems(remaining);
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            })
+                        }
+                    })
+            }
+        })
+    }
+
+    const handleViewDetails = () => {
+
+    }
+
+    const handleEdit = () => {
+
+    }
 
     return (
         <div className='relative'>
@@ -53,7 +104,7 @@ const Home = () => {
             </section>
 
             {/* Popular Products */}
-            <section className='relative'>
+            <section className='relative my-6'>
                 <div className='w-9/12 mx-auto my-8 h-full'>
                     <div className="flex flex-col justify-center items-center">
                         <p className='text-raleway'>--- Sip & Savor ---</p>
@@ -69,13 +120,33 @@ const Home = () => {
                             {
                                 coffeeItems.map(item => <CoffeeCard
                                     key={item._id}
-                                    item={item} />)
+                                    item={item}
+                                    handleDelete={handleDelete}
+                                    handleViewDetails={handleViewDetails}
+                                    handleEdit={handleEdit}
+                                />)
                             }
                         </div>
                     </div>
                 </div>
                 <img src={bg1} alt="background" className='absolute opacity-25 top-0 ' />
                 <img src={bg2} alt="background" className='absolute bottom-0 right-0 w-1/4 opacity-25' />
+            </section>
+
+            <section className='w-9/12 mx-auto my-8'>
+                <p className='text-center'>Follow Us Now</p>
+                <p className='text-3xl md:text-4xl text-rancho text-center my-1'>Follow on Instagram</p>
+
+                <div className='my-4 grid grid-cols-2 md:grid-cols-4 gap-4'>
+                    <img src="https://i.ibb.co/kxmkwmL/Rectangle-16.png" alt="" />
+                    <img src="https://i.ibb.co/3dGW4Kd/Rectangle-15.png" alt="" />
+                    <img src="https://i.ibb.co/VtH3hB9/Rectangle-14.png" alt="" />
+                    <img src="https://i.ibb.co/8KdJpPq/Rectangle-13.png" alt="" />
+                    <img src="https://i.ibb.co/YDxX64t/Rectangle-12.png" alt="" />
+                    <img src="https://i.ibb.co/0n6rsvV/Rectangle-11.png" alt="" />
+                    <img src="https://i.ibb.co/dfnm2G3/Rectangle-10.png" alt="" />
+                    <img src="https://i.ibb.co/2cnQS9x/Rectangle-9.png" alt="" />
+                </div>
             </section>
 
 
