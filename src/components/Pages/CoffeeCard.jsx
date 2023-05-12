@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaEye, FaPen, FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const CoffeeCard = ({ item, handleDelete, handleEdit, handleViewDetails }) => {
@@ -16,10 +17,11 @@ const CoffeeCard = ({ item, handleDelete, handleEdit, handleViewDetails }) => {
 
             <div className='flex flex-col gap-3 text-white z-10'>
                 <button onClick={() => handleViewDetails(item._id)} className="bg-[#D2B48C] rounded-lg p-3"><FaEye /></button>
-                <button onClick={() => handleEdit(item._id)} className="bg-[#3C393B] rounded-lg p-3"><FaPen /></button>
-                <button onClick={() => handleDelete(item._id)} className="bg-[#EA4744] rounded-lg p-3"><FaTrash /></button>
-            </div>
+                <Link to={`/coffee/update/${item._id}`} ><button className="bg-[#3C393B] rounded-lg p-3"><FaPen /></button></Link>
+
+            <button onClick={() => handleDelete(item._id)} className="bg-[#EA4744] rounded-lg p-3"><FaTrash /></button>
         </div>
+        </div >
     );
 };
 
