@@ -7,13 +7,14 @@ import item4 from '../../assets/icons/4.png'
 import bg1 from '../../assets/4.png'
 import bg2 from '../../assets/5.png'
 import { FaCoffee } from 'react-icons/fa';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import CoffeeCard from './CoffeeCard';
 import Swal from 'sweetalert2';
 
 const Home = () => {
     const loadedData = useLoaderData();
     const [coffeeItems, setItems] = useState(loadedData);
+    const navigate = useNavigate()
 
 
 
@@ -56,12 +57,12 @@ const Home = () => {
         })
     }
 
-    const handleViewDetails = () => {
-
+    const handleViewDetails = id => {
+        navigate(`/coffee/${id}`)
     }
 
-    const handleEdit = () => {
-
+    const handleEdit = id => {
+        navigate(`/coffee/update/${id}`)
     }
 
     return (
