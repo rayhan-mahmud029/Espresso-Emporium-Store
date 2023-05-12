@@ -7,11 +7,14 @@ import item4 from '../../assets/icons/4.png'
 import bg1 from '../../assets/4.png'
 import bg2 from '../../assets/5.png'
 import { FaCoffee } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
+import CoffeeCard from './CoffeeCard';
 
 const Home = () => {
+    const coffeeItems = useLoaderData();
+
     return (
-        <div>
+        <div className='relative'>
             {/* Headers */}
             <header className='relative'>
                 <img src={headerBg} alt="background photo" />
@@ -50,21 +53,33 @@ const Home = () => {
             </section>
 
             {/* Popular Products */}
-            <section className='w-9/12 mx-auto my-8 relative h-screen'>
-                <div className="flex flex-col justify-center items-center">
-                    <p className='text-raleway'>--- Sip & Savor ---</p>
-                    <p className="text-3xl md:text-4xl text-rancho">Our Popular Products</p>
-                    <Link to='/addCoffee'>
-                        <button className='btn-outline mt-2 flex items-center gap-2'>
-                            Add Coffee <FaCoffee />
-                        </button>
-                    </Link>
+            <section className='relative'>
+                <div className='w-9/12 mx-auto my-8 h-full'>
+                    <div className="flex flex-col justify-center items-center">
+                        <p className='text-raleway'>--- Sip & Savor ---</p>
+                        <p className="text-3xl md:text-4xl text-rancho">Our Popular Products</p>
+                        <Link to='/addCoffee'>
+                            <button className='btn-outline mt-2 flex items-center gap-2'>
+                                Add Coffee <FaCoffee />
+                            </button>
+                        </Link>
+
+                        {/* display coffee item  */}
+                        <div className="grid md:grid-cols-2 gap-3 mt-8">
+                            {
+                                coffeeItems.map(item => <CoffeeCard
+                                    key={item._id}
+                                    item={item} />)
+                            }
+                        </div>
+                    </div>
                 </div>
-                <img src={bg1} alt="background" className='absolute top-0' />
-                <img src={bg2} alt="background" className='absolute bottom-0 right-0 w-1/4' />
+                <img src={bg1} alt="background" className='absolute opacity-25 top-0 ' />
+                <img src={bg2} alt="background" className='absolute bottom-0 right-0 w-1/4 opacity-25' />
             </section>
 
 
+            <img src={bg2} alt="background" className='absolute -top-36 right-0 w-1/4 opacity-25' />
         </div>
     );
 };

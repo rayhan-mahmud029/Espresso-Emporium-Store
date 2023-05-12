@@ -2,6 +2,7 @@ import React from 'react';
 import { FaArrowLeft, FaChevronLeft, FaCoffee } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import formBg from '../../assets/11.png'
+import Swal from 'sweetalert2'
 
 const AddCoffee = () => {
     const handleFormSubmit = e => {
@@ -14,7 +15,28 @@ const AddCoffee = () => {
         const category = form.category.value;
         const details = form.details.value;
         const photo = form.photo.value;
-        console.log(chef);
+        const coffeeInfo = { name, chef, supplier, taste, category, details, photo }
+
+        // send data to server
+        fetch('http://localhost:5000/coffee', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(coffeeInfo)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.insertedId) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Coffee added successfully',
+                        icon: 'success',
+                        confirmButtonText: 'Close'
+                    })
+                }
+            })
     }
 
 
